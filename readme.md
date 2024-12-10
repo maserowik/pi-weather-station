@@ -45,7 +45,10 @@ Clone the Repository
 Navigate to your desired directory and clone the project:
 
 git clone https://github.com/elewin/pi-weather-station.git
+
 cd pi-weather-station
+
+
 Install Dependencies
 Install the required Node.js packages:
 
