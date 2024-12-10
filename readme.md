@@ -21,43 +21,93 @@ See it in action [here](https://www.youtube.com/watch?v=dvM6cyqYSw8).
 
 # Setup
 
-> You will need to have [Node.js](https://nodejs.org/) installed.
 
-To install, clone the repo and run
 
-    $ npm install
+Prerequisites
+Install Node.js and npm
+Open a terminal on your Raspberry Pi 4.
+Install Node.js (LTS version is recommended):
 
-Start the server with
 
-    $ npm start
+curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
+sudo apt install -y nodejs
 
-Now set point your browser to `http://localhost:8080` and put it in full screen mode (`F11` in Chromium).
+Verify Installation:
+Run the following commands to confirm Node.js and npm are installed:
+node -v
+npm -v
 
-## Access from another machine
+sudo apt update
+sudo apt install -y git
 
-It's possible to access the app from another machine, but beware that by doing so you'll be exposing the app to your entire network, and someone else could potentially access the app and retreive your API keys from the settings page. By default the app is only accessible to `localhost`, but if you would like to open it up to your network (at your own risk!), open `/server/index.js` and remove `"localhost"` from the line that contains:
+Clone the Repository
+Navigate to your desired directory and clone the project:
 
-```js
-app.listen(PORT, "localhost", async () => {
-```
+git clone https://github.com/elewin/pi-weather-station.git
+cd pi-weather-station
+Install Dependencies
+Install the required Node.js packages:
 
-so that it becomes:
+npm install
 
-```js
-app.listen(PORT, async () => {
-```
+Configure API Keys
+Create a .env file in the project root directory and add your API keys:
 
-The server will now serve the app across your network.
+nano .env
+Add the following lines to the .env file:
 
-# Settings
 
-- Your API keys are saved locally (in plain text) to `settings.json`.
-- The server will attempt to get your default location, but if it cannot or you wish to choose a different default location, enter the latitude and longitude under `Custom Latitude` and `Custom Longitude` in settings, which can be accessed by tapping the gear button in the lower right hand corner.
-- To hide the mouse cursor when using a touch screen, set `Hide Mouse` to `On`.
+MAPBOX_API_KEY=your_mapbox_key
+CLIMACELL_API_KEY=your_climacell_key
+LOCATIONIQ_API_KEY=your_locationiq_key (optional)
 
-# Do you want to Host this Application in Docker?
+Start the Server
+Launch the weather station:
 
-Pi Weather Station is available as a Docker Image for AMD64 and ARM infrastructures. see the *ReadME* here for more: https://github.com/SeanRiggs/pi-weather-station/blob/master/Docker%20Image/Docker-ReadMe.md
+npm start
+
+Access the Application
+Open a browser on your Raspberry Pi or another device on the same network and go to http://localhost:8080.
+Use full-screen mode (F11) for an enhanced display.
+
+Auto-Boot Setup 
+Create a systemd Service
+Open a terminal and create a new service file:
+
+sudo nano /etc/systemd/system/pi-weather.service
+Add the Following Content:
+Replace /home/pi/pi-weather-station with the full path to your project directory:
+
+
+[Unit]
+Description=Pi Weather Station
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/node /home/pi/pi-weather-station/index.js
+WorkingDirectory=/home/pi/pi-weather-station
+Restart=always
+User=pi
+Environment=MAPBOX_API_KEY=your_mapbox_key
+Environment=CLIMACELL_API_KEY=your_climacell_key
+Environment=LOCATIONIQ_API_KEY=your_locationiq_key (optional)
+
+[Install]
+WantedBy=multi-user.target
+Reload systemd and Enable the Service:
+
+
+sudo systemctl daemon-reload
+sudo systemctl enable pi-weather.service
+
+Start the Service:
+sudo systemctl start pi-weather.service
+
+Check Service Status:
+Ensure the service is running:
+
+sudo systemctl status pi-weather.service
+
 
 # License
 
