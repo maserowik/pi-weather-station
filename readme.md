@@ -30,6 +30,7 @@ Install Node.js (LTS version is recommended):
 
 
 curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
+
 sudo apt install -y nodejs
 
 Verify Installation:
