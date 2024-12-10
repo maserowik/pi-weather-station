@@ -73,43 +73,63 @@ Launch the weather station:
 npm start
 
 Access the Application
-Open a browser on your Raspberry Pi or another device on the same network and go to http://localhost:8080.
+Open a browser on your Raspberry Pi or another device on the same network and go to
+
+http://localhost:8080.
+
 Use full-screen mode (F11) for an enhanced display.
 
 Auto-Boot Setup 
+
 Create a systemd Service
+
 Open a terminal and create a new service file:
 
 sudo nano /etc/systemd/system/pi-weather.service
+
 Add the Following Content:
+
 Replace /home/pi/pi-weather-station with the full path to your project directory:
 
 
 [Unit]
+
 Description=Pi Weather Station
+
 After=network.target
 
 [Service]
+
 ExecStart=/usr/bin/node /home/pi/pi-weather-station/index.js
+
 WorkingDirectory=/home/pi/pi-weather-station
+
 Restart=always
+
 User=pi
+
 Environment=MAPBOX_API_KEY=your_mapbox_key
+
 Environment=CLIMACELL_API_KEY=your_climacell_key
+
 Environment=LOCATIONIQ_API_KEY=your_locationiq_key (optional)
 
 [Install]
 WantedBy=multi-user.target
+
 Reload systemd and Enable the Service:
 
 
 sudo systemctl daemon-reload
+
 sudo systemctl enable pi-weather.service
 
 Start the Service:
+
 sudo systemctl start pi-weather.service
 
 Check Service Status:
+
 Ensure the service is running:
 
 sudo systemctl status pi-weather.service
