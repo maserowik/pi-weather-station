@@ -34,8 +34,11 @@ curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
 sudo apt install -y nodejs
 
 Verify Installation:
+
 Run the following commands to confirm Node.js and npm are installed:
+
 node -v
+
 npm -v
 
 sudo apt update
