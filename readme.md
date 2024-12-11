@@ -60,15 +60,7 @@ npm install
 Configure API Keys
 Create a .env file in the project root directory and add your API keys:
 
-nano .env
-Add the following lines to the .env file:
 
-
-MAPBOX_API_KEY=your_mapbox_key
-
-CLIMACELL_API_KEY=your_climacell_key
-
-LOCATIONIQ_API_KEY=your_locationiq_key (optional)
 
 Start the Server
 Launch the weather station:
